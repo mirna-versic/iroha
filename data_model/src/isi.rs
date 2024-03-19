@@ -102,10 +102,10 @@ pub mod model {
         RemoveKeyValue(RemoveKeyValueBox),
         #[debug(fmt = "{_0:?}")]
         #[enum_ref(transparent)]
-        Grant(GrantBox),
+        Mint(GrantBox),
         #[debug(fmt = "{_0:?}")]
         #[enum_ref(transparent)]
-        Revoke(RevokeBox),
+        Burn(RevokeBox),
         #[debug(fmt = "{_0:?}")]
         ExecuteTrigger(ExecuteTrigger),
         #[debug(fmt = "{_0:?}")]
@@ -166,12 +166,12 @@ impl_instruction! {
     Transfer<Account, AssetDefinitionId, Account>,
     Transfer<Asset, Numeric, Account>,
     Transfer<Asset, Metadata, Account>,
-    Grant<PermissionToken, Account>,
-    Grant<RoleId, Account>,
-    Grant<PermissionToken, Role>,
-    Revoke<PermissionToken, Account>,
-    Revoke<RoleId, Account>,
-    Revoke<PermissionToken, Role>,
+    Mint<PermissionToken, Account>,
+    Mint<RoleId, Account>,
+    Mint<PermissionToken, Role>,
+    Burn<PermissionToken, Account>,
+    Burn<RoleId, Account>,
+    Burn<PermissionToken, Role>,
     SetParameter,
     NewParameter,
     Upgrade,
@@ -860,16 +860,16 @@ mod transparent {
     isi! {
         /// Generic instruction for granting permission to an entity.
         #[schema(bounds = "O: IntoSchema, D: Identifiable, D::Id: IntoSchema")]
-        pub struct Grant<O, D: Identifiable> {
-            /// Object to grant.
+        pub struct Mint<O, D: Identifiable> {
+            /// Object to mint.
             pub object: O,
-            /// Entity to which to grant this token.
+            /// Entity to which to mint this token.
             pub destination_id: D::Id,
         }
     }
 
-    impl Grant<PermissionToken, Account> {
-        /// Constructs a new [`Grant`] for a [`PermissionToken`].
+    impl Mint<PermissionToken, Account> {
+        /// Constructs a new [`Mint`] for a [`PermissionToken`].
         pub fn permission(permission_token: PermissionToken, to: AccountId) -> Self {
             Self {
                 object: permission_token,
@@ -878,8 +878,8 @@ mod transparent {
         }
     }
 
-    impl Grant<RoleId, Account> {
-        /// Constructs a new [`Grant`] for a [`Role`].
+    impl Mint<RoleId, Account> {
+        /// Constructs a new [`Mint`] for a [`Role`].
         pub fn role(role_id: RoleId, to: AccountId) -> Self {
             Self {
                 object: role_id,
@@ -888,8 +888,8 @@ mod transparent {
         }
     }
 
-    impl Grant<PermissionToken, Role> {
-        /// Constructs a new [`Grant`] for giving a [`PermissionToken`] to [`Role`].
+    impl Mint<PermissionToken, Role> {
+        /// Constructs a new [`Mint`] for giving a [`PermissionToken`] to [`Role`].
         pub fn role_permission(permission_token: PermissionToken, to: RoleId) -> Self {
             Self {
                 object: permission_token,
@@ -899,7 +899,7 @@ mod transparent {
     }
 
     impl_display! {
-        Grant<O, D>
+        Mint<O, D>
         where
             O: Display,
             D: Identifiable,
@@ -911,26 +911,26 @@ mod transparent {
     }
 
     impl_into_box! {
-        Grant<PermissionToken, Account> |
-        Grant<RoleId, Account> |
-        Grant<PermissionToken, Role>
-    => GrantBox => InstructionBox[Grant],
-    => GrantBoxRef<'a> => InstructionBoxRef<'a>[Grant]
+        Mint<PermissionToken, Account> |
+        Mint<RoleId, Account> |
+        Mint<PermissionToken, Role>
+    => GrantBox => InstructionBox[Mint],
+    => GrantBoxRef<'a> => InstructionBoxRef<'a>[Mint]
     }
 
     isi! {
         /// Generic instruction for revoking permission from an entity.
         #[schema(bounds = "O: IntoSchema, D: Identifiable, D::Id: IntoSchema")]
-        pub struct Revoke<O, D: Identifiable> {
-            /// Object to revoke.
+        pub struct Burn<O, D: Identifiable> {
+            /// Object to burn.
             pub object: O,
             /// Entity which is being revoked this token from.
             pub destination_id: D::Id,
         }
     }
 
-    impl Revoke<PermissionToken, Account> {
-        /// Constructs a new [`Revoke`] for a [`PermissionToken`].
+    impl Burn<PermissionToken, Account> {
+        /// Constructs a new [`Burn`] for a [`PermissionToken`].
         pub fn permission(permission_token: PermissionToken, from: AccountId) -> Self {
             Self {
                 object: permission_token,
@@ -939,8 +939,8 @@ mod transparent {
         }
     }
 
-    impl Revoke<RoleId, Account> {
-        /// Constructs a new [`Revoke`] for a [`Role`].
+    impl Burn<RoleId, Account> {
+        /// Constructs a new [`Burn`] for a [`Role`].
         pub fn role(role_id: RoleId, from: AccountId) -> Self {
             Self {
                 object: role_id,
@@ -949,8 +949,8 @@ mod transparent {
         }
     }
 
-    impl Revoke<PermissionToken, Role> {
-        /// Constructs a new [`Revoke`] for removing a [`PermissionToken`] from [`Role`].
+    impl Burn<PermissionToken, Role> {
+        /// Constructs a new [`Burn`] for removing a [`PermissionToken`] from [`Role`].
         pub fn role_permission(permission_token: PermissionToken, from: RoleId) -> Self {
             Self {
                 object: permission_token,
@@ -960,7 +960,7 @@ mod transparent {
     }
 
     impl_display! {
-        Revoke<O, D>
+        Burn<O, D>
         where
             O: Display,
             D: Identifiable,
@@ -972,11 +972,11 @@ mod transparent {
     }
 
     impl_into_box! {
-        Revoke<PermissionToken, Account> |
-        Revoke<RoleId, Account> |
-        Revoke<PermissionToken, Role>
-    => RevokeBox => InstructionBox[Revoke],
-    => RevokeBoxRef<'a> => InstructionBoxRef<'a>[Revoke]
+        Burn<PermissionToken, Account> |
+        Burn<RoleId, Account> |
+        Burn<PermissionToken, Role>
+    => RevokeBox => InstructionBox[Burn],
+    => RevokeBoxRef<'a> => InstructionBoxRef<'a>[Burn]
     }
 
     isi! {
@@ -1220,14 +1220,14 @@ isi_box! {
         name(GrantType),
         derive(Encode),
     )]
-    /// Enum with all supported [`Grant`] instructions.
+    /// Enum with all supported [`Mint`] instructions.
     pub enum GrantBox {
-        /// Grant [`PermissionToken`] to [`Account`].
-        PermissionToken(Grant<PermissionToken, Account>),
-        /// Grant [`Role`] to [`Account`].
-        Role(Grant<RoleId, Account>),
-        /// Grant [`PermissionToken`] to [`Role`].
-        RolePermissionToken(Grant<PermissionToken, Role>),
+        /// Mint [`PermissionToken`] to [`Account`].
+        PermissionToken(Mint<PermissionToken, Account>),
+        /// Mint [`Role`] to [`Account`].
+        Role(Mint<RoleId, Account>),
+        /// Mint [`PermissionToken`] to [`Role`].
+        RolePermissionToken(Mint<PermissionToken, Role>),
     }
 }
 
@@ -1237,14 +1237,14 @@ isi_box! {
         name(RevokeType),
         derive(Encode),
     )]
-    /// Enum with all supported [`Revoke`] instructions.
+    /// Enum with all supported [`Burn`] instructions.
     pub enum RevokeBox {
-        /// Revoke [`PermissionToken`] from [`Account`].
-        PermissionToken(Revoke<PermissionToken, Account>),
-        /// Revoke [`Role`] from [`Account`].
-        Role(Revoke<RoleId, Account>),
-        /// Revoke [`PermissionToken`] from [`Account`].
-        RolePermissionToken(Revoke<PermissionToken, Role>),
+        /// Burn [`PermissionToken`] from [`Account`].
+        PermissionToken(Burn<PermissionToken, Account>),
+        /// Burn [`Role`] from [`Account`].
+        Role(Burn<RoleId, Account>),
+        /// Burn [`PermissionToken`] from [`Account`].
+        RolePermissionToken(Burn<PermissionToken, Role>),
     }
 }
 
@@ -1551,9 +1551,9 @@ pub mod error {
 /// The prelude re-exports most commonly used traits, structs and macros from this crate.
 pub mod prelude {
     pub use super::{
-        AccountMintBox, AssetTransferBox, Burn, BurnBox, ExecuteTrigger, Fail, Grant, GrantBox,
+        AccountMintBox, AssetTransferBox, Burn, BurnBox, ExecuteTrigger, Fail, Mint, GrantBox,
         InstructionBox, Log, Mint, MintBox, NewParameter, Register, RegisterBox, RemoveKeyValue,
-        RemoveKeyValueBox, Revoke, RevokeBox, SetKeyValue, SetKeyValueBox, SetParameter, Transfer,
+        RemoveKeyValueBox, Burn, RevokeBox, SetKeyValue, SetKeyValueBox, SetParameter, Transfer,
         TransferBox, Unregister, UnregisterBox, Upgrade,
     };
 }

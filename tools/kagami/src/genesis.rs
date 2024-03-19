@@ -109,7 +109,7 @@ pub fn generate_default(
         44u32,
         AssetId::new("cabbage#garden_of_live_flowers".parse()?, alice_id.clone()),
     );
-    let grant_permission_to_set_parameters = Grant::permission(
+    let grant_permission_to_set_parameters = Mint::permission(
         PermissionToken::new("CanSetParameters".parse()?, &json!(null)),
         alice_id.clone(),
     );

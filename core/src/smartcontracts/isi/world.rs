@@ -156,11 +156,11 @@ pub mod isi {
                 .collect::<Vec<_>>();
 
             for account_id in accounts_with_role {
-                let revoke = Revoke {
+                let burn = Burn {
                     object: role_id.clone(),
                     destination_id: account_id,
                 };
-                revoke.execute(authority, wsv)?
+                burn.execute(authority, wsv)?
             }
 
             let world = wsv.world_mut();
@@ -174,7 +174,7 @@ pub mod isi {
         }
     }
 
-    impl Execute for Grant<PermissionToken, Role> {
+    impl Execute for Mint<PermissionToken, Role> {
         #[metrics(+"grant_role_permission")]
         fn execute(self, _authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
             let role_id = self.destination_id;
@@ -195,7 +195,7 @@ pub mod isi {
 
             if !role.permissions.insert(permission_token.clone()) {
                 return Err(RepetitionError {
-                    instruction_type: InstructionType::Grant,
+                    instruction_type: InstructionType::Mint,
                     id: permission_token.definition_id.into(),
                 }
                 .into());
@@ -210,7 +210,7 @@ pub mod isi {
         }
     }
 
-    impl Execute for Revoke<PermissionToken, Role> {
+    impl Execute for Burn<PermissionToken, Role> {
         #[metrics(+"grant_role_permission")]
         fn execute(self, _authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
             let role_id = self.destination_id;

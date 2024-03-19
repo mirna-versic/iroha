@@ -505,8 +505,8 @@ mod account {
         /// List accounts
         #[command(subcommand)]
         List(List),
-        /// Grant a permission to the account
-        Grant(Grant),
+        /// Mint a permission to the account
+        Mint(Mint),
         /// List all account permissions
         ListPermissions(ListPermissions),
     }
@@ -517,7 +517,7 @@ mod account {
                 Args::Register,
                 Args::Set,
                 Args::List,
-                Args::Grant,
+                Args::Mint,
                 Args::ListPermissions,
             })
         }
@@ -626,7 +626,7 @@ mod account {
     }
 
     #[derive(clap::Args, Debug)]
-    pub struct Grant {
+    pub struct Mint {
         /// Account id
         #[arg(short, long)]
         pub id: AccountId,
@@ -655,16 +655,16 @@ mod account {
         }
     }
 
-    impl RunArgs for Grant {
+    impl RunArgs for Mint {
         fn run(self, context: &mut dyn RunContext) -> Result<()> {
             let Self {
                 id,
                 permission,
                 metadata,
             } = self;
-            let grant = iroha_client::data_model::isi::Grant::permission(permission.0, id);
-            submit([grant], metadata.load()?, context)
-                .wrap_err("Failed to grant the permission to the account")
+            let mint = iroha_client::data_model::isi::Mint::permission(permission.0, id);
+            submit([mint], metadata.load()?, context)
+                .wrap_err("Failed to mint the permission to the account")
         }
     }
 

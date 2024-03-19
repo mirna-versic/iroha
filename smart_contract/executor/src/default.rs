@@ -113,7 +113,7 @@ pub fn visit_instruction<V: Validate + ?Sized>(
         InstructionBox::Fail(isi) => {
             executor.visit_fail(authority, isi);
         }
-        InstructionBox::Grant(isi) => {
+        InstructionBox::Mint(isi) => {
             executor.visit_grant(authority, isi);
         }
         InstructionBox::Mint(isi) => {
@@ -125,7 +125,7 @@ pub fn visit_instruction<V: Validate + ?Sized>(
         InstructionBox::RemoveKeyValue(isi) => {
             executor.visit_remove_key_value(authority, isi);
         }
-        InstructionBox::Revoke(isi) => {
+        InstructionBox::Burn(isi) => {
             executor.visit_revoke(authority, isi);
         }
         InstructionBox::SetKeyValue(isi) => {
@@ -209,9 +209,9 @@ pub mod domain {
         {
             for (owner_id, permission) in accounts_permission_tokens() {
                 if is_token_domain_associated(&permission, domain_id) {
-                    let isi = Revoke::permission(permission, owner_id.clone());
+                    let isi = Burn::permission(permission, owner_id.clone());
                     if let Err(_err) = isi.execute() {
-                        deny!(executor, "Can't revoke associated permission token");
+                        deny!(executor, "Can't burn associated permission token");
                     }
                 }
             }
@@ -461,9 +461,9 @@ pub mod account {
         {
             for (owner_id, permission) in accounts_permission_tokens() {
                 if is_token_account_associated(&permission, account_id) {
-                    let isi = Revoke::permission(permission, owner_id.clone());
+                    let isi = Burn::permission(permission, owner_id.clone());
                     if let Err(_err) = isi.execute() {
-                        deny!(executor, "Can't revoke associated permission token");
+                        deny!(executor, "Can't burn associated permission token");
                     }
                 }
             }
@@ -739,9 +739,9 @@ pub mod asset_definition {
         {
             for (owner_id, permission) in accounts_permission_tokens() {
                 if is_token_asset_definition_associated(&permission, asset_definition_id) {
-                    let isi = Revoke::permission(permission, owner_id.clone());
+                    let isi = Burn::permission(permission, owner_id.clone());
                     if let Err(_err) = isi.execute() {
-                        deny!(executor, "Can't revoke associated permission token");
+                        deny!(executor, "Can't burn associated permission token");
                     }
                 }
             }
@@ -1363,7 +1363,7 @@ pub mod role {
     pub fn visit_grant_account_role<V: Validate + ?Sized>(
         executor: &mut V,
         authority: &AccountId,
-        isi: &Grant<RoleId, Account>,
+        isi: &Mint<RoleId, Account>,
     ) {
         impl_validate_grant_revoke_account_role!(executor, isi, authority, validate_grant);
     }
@@ -1371,7 +1371,7 @@ pub mod role {
     pub fn visit_revoke_account_role<V: Validate + ?Sized>(
         executor: &mut V,
         authority: &AccountId,
-        isi: &Revoke<RoleId, Account>,
+        isi: &Burn<RoleId, Account>,
     ) {
         impl_validate_grant_revoke_account_role!(executor, isi, authority, validate_revoke);
     }
@@ -1379,17 +1379,17 @@ pub mod role {
     pub fn visit_grant_role_permission<V: Validate + ?Sized>(
         executor: &mut V,
         authority: &AccountId,
-        isi: &Grant<PermissionToken, Role>,
+        isi: &Mint<PermissionToken, Role>,
     ) {
-        impl_validate_grant_revoke_role_permission!(executor, isi, authority, validate_grant, Grant<PermissionToken, Role>);
+        impl_validate_grant_revoke_role_permission!(executor, isi, authority, validate_grant, Mint<PermissionToken, Role>);
     }
 
     pub fn visit_revoke_role_permission<V: Validate + ?Sized>(
         executor: &mut V,
         authority: &AccountId,
-        isi: &Revoke<PermissionToken, Role>,
+        isi: &Burn<PermissionToken, Role>,
     ) {
-        impl_validate_grant_revoke_role_permission!(executor, isi, authority, validate_revoke, Revoke<PermissionToken, Role>);
+        impl_validate_grant_revoke_role_permission!(executor, isi, authority, validate_revoke, Burn<PermissionToken, Role>);
     }
 }
 
@@ -1429,9 +1429,9 @@ pub mod trigger {
         {
             for (owner_id, permission) in accounts_permission_tokens() {
                 if is_token_trigger_associated(&permission, trigger_id) {
-                    let isi = Revoke::permission(permission, owner_id.clone());
+                    let isi = Burn::permission(permission, owner_id.clone());
                     if let Err(_err) = isi.execute() {
-                        deny!(executor, "Can't revoke associated permission token");
+                        deny!(executor, "Can't burn associated permission token");
                     }
                 }
             }
@@ -1616,28 +1616,28 @@ pub mod permission_token {
     pub fn visit_grant_account_permission<V: Validate + ?Sized>(
         executor: &mut V,
         authority: &AccountId,
-        isi: &Grant<PermissionToken, Account>,
+        isi: &Mint<PermissionToken, Account>,
     ) {
         impl_validate!(
             executor,
             authority,
             isi,
             validate_grant,
-            Grant<PermissionToken, Account>
+            Mint<PermissionToken, Account>
         );
     }
 
     pub fn visit_revoke_account_permission<V: Validate + ?Sized>(
         executor: &mut V,
         authority: &AccountId,
-        isi: &Revoke<PermissionToken, Account>,
+        isi: &Burn<PermissionToken, Account>,
     ) {
         impl_validate!(
             executor,
             authority,
             isi,
             validate_revoke,
-            Revoke<PermissionToken, Account>
+            Burn<PermissionToken, Account>
         );
     }
 }

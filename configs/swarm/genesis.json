@@ -112,7 +112,7 @@
         }
       },
       {
-        "Grant": {
+        "Mint": {
           "PermissionToken": {
             "object": {
               "definition_id": "CanSetParameters",

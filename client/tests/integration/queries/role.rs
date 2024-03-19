@@ -142,7 +142,7 @@ fn find_roles_by_account_id() -> Result<()> {
     let grant_roles = role_ids
         .iter()
         .cloned()
-        .map(|role_id| Grant::role(role_id, alice_id.clone()))
+        .map(|role_id| Mint::role(role_id, alice_id.clone()))
         .collect::<Vec<_>>();
     test_client.submit_all_blocking(grant_roles)?;
 

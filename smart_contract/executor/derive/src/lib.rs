@@ -108,13 +108,13 @@ pub fn derive_token(input: TokenStream) -> Result<TokenStream> {
 ///
 /// ## `validate` attribute
 ///
-/// Use `validate` to specify [*Pass Condition*](#permission) for both `Grant` and `Revoke`
+/// Use `validate` to specify [*Pass Condition*](#permission) for both `Mint` and `Burn`
 /// instructions validation.
 ///
 /// ## `validate_grant` and `validate_revoke` attributes
 ///
 /// Use `validate_grant` together with `validate_revoke` to specify *pass condition* for
-/// `Grant` and `Revoke` instructions validation separately.
+/// `Mint` and `Burn` instructions validation separately.
 ///
 /// # Pass conditions
 ///

@@ -27,7 +27,7 @@ where
 }
 
 /// Trait that should be implemented for all permission tokens.
-/// Provides a function to check validity of [`Grant`] and [`Revoke`]
+/// Provides a function to check validity of [`Mint`] and [`Burn`]
 /// instructions containing implementing token.
 pub trait ValidateGrantRevoke {
     #[allow(missing_docs, clippy::missing_errors_doc)]
@@ -37,7 +37,7 @@ pub trait ValidateGrantRevoke {
     fn validate_revoke(&self, authority: &AccountId, block_height: u64) -> Result;
 }
 
-/// Predicate-like trait used for pass conditions to identify if [`Grant`] or [`Revoke`] should be allowed.
+/// Predicate-like trait used for pass conditions to identify if [`Mint`] or [`Burn`] should be allowed.
 pub trait PassCondition {
     #[allow(missing_docs, clippy::missing_errors_doc)]
     fn validate(&self, authority: &AccountId, block_height: u64) -> Result;

@@ -110,13 +110,13 @@ mod seal {
         Transfer<Asset, Numeric, Account>,
         Transfer<Asset, Metadata, Account>,
 
-        Grant<PermissionToken, Account>,
-        Grant<RoleId, Account>,
-        Grant<PermissionToken, Role>,
+        Mint<PermissionToken, Account>,
+        Mint<RoleId, Account>,
+        Mint<PermissionToken, Role>,
 
-        Revoke<PermissionToken, Account>,
-        Revoke<RoleId, Account>,
-        Revoke<PermissionToken, Role>,
+        Burn<PermissionToken, Account>,
+        Burn<RoleId, Account>,
+        Burn<PermissionToken, Role>,
 
         SetParameter,
         NewParameter,

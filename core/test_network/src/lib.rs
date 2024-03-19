@@ -119,7 +119,7 @@ impl TestGenesis for GenesisNetwork {
             upgrade_executor_permission,
         ] {
             first_transaction
-                .append_instruction(Grant::permission(permission, alice_id.clone()).into());
+                .append_instruction(Mint::permission(permission, alice_id.clone()).into());
         }
 
         for isi in extra_isi.into_iter() {

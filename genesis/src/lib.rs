@@ -47,7 +47,7 @@ impl GenesisNetwork {
         genesis_key_pair: &KeyPair,
     ) -> GenesisNetwork {
         // The first instruction should be Executor upgrade.
-        // This makes it possible to grant permissions to users in genesis.
+        // This makes it possible to mint permissions to users in genesis.
         let transactions_iter = std::iter::once(GenesisTransactionBuilder {
             isi: vec![Upgrade::new(raw_block.executor).into()],
         })

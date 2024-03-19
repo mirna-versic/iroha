@@ -81,7 +81,7 @@ impl FromAttributes for ValidateAttribute {
                 general_condition = general_condition
                     .or(accumulator
                         .handle(syn::parse2(tokens.clone()).map_err(darling::Error::from)));
-            } else if path.is_ident("grant") {
+            } else if path.is_ident("mint") {
                 if general_condition.is_some() {
                     accumulator.push(
                         darling::Error::custom(
@@ -102,7 +102,7 @@ impl FromAttributes for ValidateAttribute {
                 grant_condition = grant_condition
                     .or(accumulator
                         .handle(syn::parse2(tokens.clone()).map_err(darling::Error::from)));
-            } else if path.is_ident("revoke") {
+            } else if path.is_ident("burn") {
                 if general_condition.is_some() {
                     accumulator.push(
                         darling::Error::custom(
@@ -164,15 +164,15 @@ fn gen_validate_impls(
     let validate_attribute = ValidateAttribute::from_attributes(attributes)?;
     match validate_attribute {
         ValidateAttribute::General(pass_condition) => Ok((
-            gen_validate_impl(IsiName::Grant, &pass_condition),
-            gen_validate_impl(IsiName::Revoke, &pass_condition),
+            gen_validate_impl(IsiName::Mint, &pass_condition),
+            gen_validate_impl(IsiName::Burn, &pass_condition),
         )),
         ValidateAttribute::Separate {
             grant_condition,
             revoke_condition,
         } => Ok((
-            gen_validate_impl(IsiName::Grant, &grant_condition),
-            gen_validate_impl(IsiName::Revoke, &revoke_condition),
+            gen_validate_impl(IsiName::Mint, &grant_condition),
+            gen_validate_impl(IsiName::Burn, &revoke_condition),
         )),
     }
 }
@@ -180,15 +180,15 @@ fn gen_validate_impls(
 /// Name of ISI to validate.
 #[derive(Copy, Clone)]
 enum IsiName {
-    Grant,
-    Revoke,
+    Mint,
+    Burn,
 }
 
 impl ToString for IsiName {
     fn to_string(&self) -> String {
         match self {
-            IsiName::Grant => "grant",
-            IsiName::Revoke => "revoke",
+            IsiName::Mint => "mint",
+            IsiName::Burn => "burn",
         }
         .to_string()
     }
@@ -203,11 +203,11 @@ fn gen_validate_impl(isi_name: IsiName, pass_condition: &Type) -> proc_macro2::T
     );
 
     let doc_intro = match isi_name {
-        IsiName::Grant => {
-            "Validate [`Grant`](::iroha_executor::data_model::prelude::Grant) instruction.\n"
+        IsiName::Mint => {
+            "Validate [`Mint`](::iroha_executor::data_model::prelude::Mint) instruction.\n"
         }
-        IsiName::Revoke => {
-            "Validate [`Revoke`](::iroha_executor::data_model::prelude::Revoke) instruction.\n"
+        IsiName::Burn => {
+            "Validate [`Burn`](::iroha_executor::data_model::prelude::Burn) instruction.\n"
         }
     };
 

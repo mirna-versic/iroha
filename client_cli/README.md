@@ -40,7 +40,7 @@ iroha_client_cli [OPTIONS] <SUBCOMMAND>
 
 |  Command  |                                                                 Description                                                                 |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `account` | Execute commands related to accounts: register a new one, list all accounts, grant a permission to an account, list all account permissions |
+| `account` | Execute commands related to accounts: register a new one, list all accounts, mint a permission to an account, list all account permissions |
 | `asset`   | Execute commands related to assets: register a new one, mint or transfer assets, get info about an asset, list all assets                   |
 | `blocks`  | Get block stream from Iroha peer                                                                                                            |
 | `domain`  | Execute commands related to domains: register a new one, list all domains                                                                   |
@@ -50,7 +50,7 @@ iroha_client_cli [OPTIONS] <SUBCOMMAND>
 | `wasm`    | Execute commands related to WASM                                                                                                            |
 | `help`    | Print the help message for `iroha_client_cli` and/or the current subcommand other than `help` subcommand                                    |
 
-Refer to [Iroha Special Instructions](https://hyperledger.github.io/iroha-2-docs/guide/blockchain/instructions.html) for more information about Iroha instructions such as register, mint, grant, and so on.
+Refer to [Iroha Special Instructions](https://hyperledger.github.io/iroha-2-docs/guide/blockchain/instructions.html) for more information about Iroha instructions such as register, mint, mint, and so on.
 
 Check the [Bash guide in Iroha Tutorial](https://hyperledger.github.io/iroha-2-docs/guide/bash.html) for detailed instructions on working with Iroha Client CLI.
 

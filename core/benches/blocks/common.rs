@@ -64,7 +64,7 @@ pub fn populate_wsv(
         let domain_id = construct_domain_id(i);
         let domain = Domain::new(domain_id.clone());
         instructions.push(Register::domain(domain).into());
-        let can_unregister_domain = Grant::permission(
+        let can_unregister_domain = Mint::permission(
             PermissionToken::new(
                 "CanUnregisterDomain".parse().unwrap(),
                 &json!({ "domain_id": domain_id.clone() }),
@@ -76,7 +76,7 @@ pub fn populate_wsv(
             let account_id = construct_account_id(j, domain_id.clone());
             let account = Account::new(account_id.clone(), KeyPair::random().into_parts().0);
             instructions.push(Register::account(account).into());
-            let can_unregister_account = Grant::permission(
+            let can_unregister_account = Mint::permission(
                 PermissionToken::new(
                     "CanUnregisterAccount".parse().unwrap(),
                     &json!({ "account_id": account_id.clone() }),
@@ -89,7 +89,7 @@ pub fn populate_wsv(
             let asset_definition_id = construct_asset_definition_id(k, domain_id.clone());
             let asset_definition = AssetDefinition::numeric(asset_definition_id.clone());
             instructions.push(Register::asset_definition(asset_definition).into());
-            let can_unregister_asset_definition = Grant::permission(
+            let can_unregister_asset_definition = Mint::permission(
                 PermissionToken::new(
                     "CanUnregisterAssetDefinition".parse().unwrap(),
                     &json!({ "asset_definition_id": asset_definition_id }),

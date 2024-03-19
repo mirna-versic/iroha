@@ -120,7 +120,7 @@ impl Executor {
         accounts
             .iter()
             .try_for_each(|(account, domain_id)| {
-                Revoke::permission(
+                Burn::permission(
                     PermissionToken::new(
                         can_unregister_domain_definition_id.clone(),
                         &json!({ "domain_id": domain_id }),
@@ -132,14 +132,14 @@ impl Executor {
                     format!(
                         "{:?}",
                         anyhow!(error).context(format!(
-                            "Failed to revoke `{}` token from account `{}`",
+                            "Failed to burn `{}` token from account `{}`",
                             can_unregister_domain_definition_id,
                             account.id()
                         ))
                     )
                 })?;
 
-                Grant::permission(
+                Mint::permission(
                     PermissionToken::new(
                         can_control_domain_lives_definition_id.clone(),
                         &json!(null),
@@ -151,7 +151,7 @@ impl Executor {
                     format!(
                         "{:?}",
                         anyhow!(error).context(format!(
-                            "Failed to grant `{}` token from account `{}`",
+                            "Failed to mint `{}` token from account `{}`",
                             can_control_domain_lives_definition_id,
                             account.id()
                         ))

@@ -79,7 +79,7 @@ fn register_and_grant_role_for_metadata_access() -> Result<()> {
     test_client.submit_blocking(register_role)?;
 
     // Mouse grants role to Alice
-    let grant_role = Grant::role(role_id.clone(), alice_id.clone());
+    let grant_role = Mint::role(role_id.clone(), alice_id.clone());
     let grant_role_tx = TransactionBuilder::new(chain_id, mouse_id.clone())
         .with_instructions([grant_role])
         .sign(&mouse_key_pair);
@@ -124,8 +124,8 @@ fn unregistered_role_removed_from_account() -> Result<()> {
     ));
     test_client.submit_blocking(register_role)?;
 
-    // Grant root role to Mouse
-    let grant_role = Grant::role(role_id.clone(), mouse_id.clone());
+    // Mint root role to Mouse
+    let grant_role = Mint::role(role_id.clone(), mouse_id.clone());
     test_client.submit_blocking(grant_role)?;
 
     // Check that Mouse has root role
@@ -246,7 +246,7 @@ fn grant_revoke_role_permissions() -> Result<()> {
     test_client.submit_blocking(transfer_domain)?;
 
     // Mouse grants role to Alice
-    let grant_role = Grant::role(role_id.clone(), alice_id.clone());
+    let grant_role = Mint::role(role_id.clone(), alice_id.clone());
     let grant_role_tx = TransactionBuilder::new(chain_id.clone(), mouse_id.clone())
         .with_instructions([grant_role])
         .sign(&mouse_key_pair);
@@ -261,8 +261,8 @@ fn grant_revoke_role_permissions() -> Result<()> {
         "CanSetKeyValueInUserAccount".parse()?,
         &json!({ "account_id": mouse_id }),
     );
-    let grant_role_permission = Grant::role_permission(permission.clone(), role_id.clone());
-    let revoke_role_permission = Revoke::role_permission(permission.clone(), role_id.clone());
+    let grant_role_permission = Mint::role_permission(permission.clone(), role_id.clone());
+    let revoke_role_permission = Burn::role_permission(permission.clone(), role_id.clone());
 
     // Alice can't modify Mouse's metadata without proper permission token
     let found_permissions = test_client

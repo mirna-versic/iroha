@@ -136,14 +136,14 @@ pub trait Visit {
         visit_remove_asset_key_value(&RemoveKeyValue<Asset>),
 
         // Visit GrantBox
-        visit_grant_account_permission(&Grant<PermissionToken, Account>),
-        visit_grant_account_role(&Grant<RoleId, Account>),
-        visit_grant_role_permission(&Grant<PermissionToken, Role>),
+        visit_grant_account_permission(&Mint<PermissionToken, Account>),
+        visit_grant_account_role(&Mint<RoleId, Account>),
+        visit_grant_role_permission(&Mint<PermissionToken, Role>),
 
         // Visit RevokeBox
-        visit_revoke_account_permission(&Revoke<PermissionToken, Account>),
-        visit_revoke_account_role(&Revoke<RoleId, Account>),
-        visit_revoke_role_permission(&Revoke<PermissionToken, Role>),
+        visit_revoke_account_permission(&Burn<PermissionToken, Account>),
+        visit_revoke_account_role(&Burn<RoleId, Account>),
+        visit_revoke_role_permission(&Burn<PermissionToken, Role>),
     }
 }
 
@@ -246,13 +246,13 @@ pub fn visit_instruction<V: Visit + ?Sized>(
         InstructionBox::Log(variant_value) => visitor.visit_log(authority, variant_value),
         InstructionBox::Burn(variant_value) => visitor.visit_burn(authority, variant_value),
         InstructionBox::Fail(variant_value) => visitor.visit_fail(authority, variant_value),
-        InstructionBox::Grant(variant_value) => visitor.visit_grant(authority, variant_value),
+        InstructionBox::Mint(variant_value) => visitor.visit_grant(authority, variant_value),
         InstructionBox::Mint(variant_value) => visitor.visit_mint(authority, variant_value),
         InstructionBox::Register(variant_value) => visitor.visit_register(authority, variant_value),
         InstructionBox::RemoveKeyValue(variant_value) => {
             visitor.visit_remove_key_value(authority, variant_value)
         }
-        InstructionBox::Revoke(variant_value) => visitor.visit_revoke(authority, variant_value),
+        InstructionBox::Burn(variant_value) => visitor.visit_revoke(authority, variant_value),
         InstructionBox::SetKeyValue(variant_value) => {
             visitor.visit_set_key_value(authority, variant_value)
         }
@@ -421,14 +421,14 @@ leaf_visitors! {
     visit_remove_domain_key_value(&RemoveKeyValue<Domain>),
     visit_register_peer(&Register<Peer>),
     visit_unregister_peer(&Unregister<Peer>),
-    visit_grant_account_permission(&Grant<PermissionToken, Account>),
-    visit_revoke_account_permission(&Revoke<PermissionToken, Account>),
+    visit_grant_account_permission(&Mint<PermissionToken, Account>),
+    visit_revoke_account_permission(&Burn<PermissionToken, Account>),
     visit_register_role(&Register<Role>),
     visit_unregister_role(&Unregister<Role>),
-    visit_grant_account_role(&Grant<RoleId, Account>),
-    visit_revoke_account_role(&Revoke<RoleId, Account>),
-    visit_grant_role_permission(&Grant<PermissionToken, Role>),
-    visit_revoke_role_permission(&Revoke<PermissionToken, Role>),
+    visit_grant_account_role(&Mint<RoleId, Account>),
+    visit_revoke_account_role(&Burn<RoleId, Account>),
+    visit_grant_role_permission(&Mint<PermissionToken, Role>),
+    visit_revoke_role_permission(&Burn<PermissionToken, Role>),
     visit_register_trigger(&Register<Trigger<TriggeringEventFilterBox >>),
     visit_unregister_trigger(&Unregister<Trigger<TriggeringEventFilterBox >>),
     visit_mint_trigger_repetitions(&Mint<u32, Trigger<TriggeringEventFilterBox >>),

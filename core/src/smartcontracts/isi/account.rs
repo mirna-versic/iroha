@@ -21,8 +21,8 @@ impl Registrable for iroha_data_model::account::NewAccount {
 /// - minting/burning public key into account signatories
 /// - minting/burning signature condition check
 /// - update metadata
-/// - grant permissions and roles
-/// - Revoke permissions or roles
+/// - mint permissions and roles
+/// - Burn permissions or roles
 pub mod isi {
     use iroha_data_model::{
         asset::{AssetValue, AssetValueType},
@@ -257,7 +257,7 @@ pub mod isi {
         }
     }
 
-    impl Execute for Grant<PermissionToken, Account> {
+    impl Execute for Mint<PermissionToken, Account> {
         #[metrics(+"grant_account_permission")]
         fn execute(self, _authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
             let account_id = self.destination_id;
@@ -277,7 +277,7 @@ pub mod isi {
 
             if wsv.account_contains_inherent_permission(&account_id, &permission) {
                 return Err(RepetitionError {
-                    instruction_type: InstructionType::Grant,
+                    instruction_type: InstructionType::Mint,
                     id: permission.definition_id.into(),
                 }
                 .into());
@@ -296,7 +296,7 @@ pub mod isi {
         }
     }
 
-    impl Execute for Revoke<PermissionToken, Account> {
+    impl Execute for Burn<PermissionToken, Account> {
         #[metrics(+"revoke_account_permission")]
         fn execute(self, _authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
             let account_id = self.destination_id;
@@ -320,7 +320,7 @@ pub mod isi {
         }
     }
 
-    impl Execute for Grant<RoleId, Account> {
+    impl Execute for Mint<RoleId, Account> {
         #[metrics(+"grant_account_role")]
         fn execute(self, _authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
             let account_id = self.destination_id;
@@ -344,7 +344,7 @@ pub mod isi {
                 .insert(RoleIdWithOwner::new(account_id.clone(), role_id.clone()))
             {
                 return Err(RepetitionError {
-                    instruction_type: InstructionType::Grant,
+                    instruction_type: InstructionType::Mint,
                     id: IdBox::RoleId(role_id),
                 }
                 .into());
@@ -371,7 +371,7 @@ pub mod isi {
         }
     }
 
-    impl Execute for Revoke<RoleId, Account> {
+    impl Execute for Burn<RoleId, Account> {
         #[metrics(+"revoke_account_role")]
         fn execute(self, _authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
             let account_id = self.destination_id;

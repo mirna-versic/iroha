@@ -9,7 +9,7 @@ use iroha_smart_contract::data_model::{executor::Result, prelude::*};
 use crate::permission::{self, Token as _};
 
 /// Declare token types of current module. Use it with a full path to the token.
-/// Used to iterate over tokens to validate `Grant` and `Revoke` instructions.
+/// Used to iterate over tokens to validate `Mint` and `Burn` instructions.
 ///
 ///
 /// Example:
@@ -408,7 +408,7 @@ pub mod parameter {
             }
 
             Err(ValidationFail::NotPermitted(
-                "Can't grant permission to create new configuration parameters outside genesis without permission from genesis"
+                "Can't mint permission to create new configuration parameters outside genesis without permission from genesis"
                     .to_owned()
             ))
         }
@@ -419,7 +419,7 @@ pub mod parameter {
             }
 
             Err(ValidationFail::NotPermitted(
-                "Can't revoke permission to create new configuration parameters outside genesis without permission from genesis"
+                "Can't burn permission to create new configuration parameters outside genesis without permission from genesis"
                     .to_owned()
             ))
         }
@@ -432,7 +432,7 @@ pub mod parameter {
             }
 
             Err(ValidationFail::NotPermitted(
-                "Can't grant permission to set configuration parameters outside genesis without permission from genesis"
+                "Can't mint permission to set configuration parameters outside genesis without permission from genesis"
                     .to_owned()
             ))
         }
@@ -443,7 +443,7 @@ pub mod parameter {
             }
 
             Err(ValidationFail::NotPermitted(
-                "Can't revoke permission to set configuration parameters outside genesis without permission from genesis"
+                "Can't burn permission to set configuration parameters outside genesis without permission from genesis"
                     .to_owned()
             ))
         }

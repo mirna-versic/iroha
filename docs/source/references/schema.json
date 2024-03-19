@@ -1367,7 +1367,7 @@
       }
     ]
   },
-  "Grant<PermissionToken, Account>": {
+  "Mint<PermissionToken, Account>": {
     "Struct": [
       {
         "name": "object",
@@ -1379,7 +1379,7 @@
       }
     ]
   },
-  "Grant<PermissionToken, Role>": {
+  "Mint<PermissionToken, Role>": {
     "Struct": [
       {
         "name": "object",
@@ -1391,7 +1391,7 @@
       }
     ]
   },
-  "Grant<RoleId, Account>": {
+  "Mint<RoleId, Account>": {
     "Struct": [
       {
         "name": "object",
@@ -1408,17 +1408,17 @@
       {
         "tag": "PermissionToken",
         "discriminant": 0,
-        "type": "Grant<PermissionToken, Account>"
+        "type": "Mint<PermissionToken, Account>"
       },
       {
         "tag": "Role",
         "discriminant": 1,
-        "type": "Grant<RoleId, Account>"
+        "type": "Mint<RoleId, Account>"
       },
       {
         "tag": "RolePermissionToken",
         "discriminant": 2,
-        "type": "Grant<PermissionToken, Role>"
+        "type": "Mint<PermissionToken, Role>"
       }
     ]
   },
@@ -1577,12 +1577,12 @@
         "type": "RemoveKeyValueBox"
       },
       {
-        "tag": "Grant",
+        "tag": "Mint",
         "discriminant": 7,
         "type": "GrantBox"
       },
       {
-        "tag": "Revoke",
+        "tag": "Burn",
         "discriminant": 8,
         "type": "RevokeBox"
       },
@@ -1739,11 +1739,11 @@
         "discriminant": 6
       },
       {
-        "tag": "Grant",
+        "tag": "Mint",
         "discriminant": 7
       },
       {
-        "tag": "Revoke",
+        "tag": "Burn",
         "discriminant": 8
       },
       {
@@ -3042,7 +3042,7 @@
       }
     ]
   },
-  "Revoke<PermissionToken, Account>": {
+  "Burn<PermissionToken, Account>": {
     "Struct": [
       {
         "name": "object",
@@ -3054,7 +3054,7 @@
       }
     ]
   },
-  "Revoke<PermissionToken, Role>": {
+  "Burn<PermissionToken, Role>": {
     "Struct": [
       {
         "name": "object",
@@ -3066,7 +3066,7 @@
       }
     ]
   },
-  "Revoke<RoleId, Account>": {
+  "Burn<RoleId, Account>": {
     "Struct": [
       {
         "name": "object",
@@ -3083,17 +3083,17 @@
       {
         "tag": "PermissionToken",
         "discriminant": 0,
-        "type": "Revoke<PermissionToken, Account>"
+        "type": "Burn<PermissionToken, Account>"
       },
       {
         "tag": "Role",
         "discriminant": 1,
-        "type": "Revoke<RoleId, Account>"
+        "type": "Burn<RoleId, Account>"
       },
       {
         "tag": "RolePermissionToken",
         "discriminant": 2,
-        "type": "Revoke<PermissionToken, Role>"
+        "type": "Burn<PermissionToken, Role>"
       }
     ]
   },

@@ -276,7 +276,7 @@ fn find_rate_and_make_exchange_isi_should_succeed() {
     };
 
     let grant_alice_asset_transfer_permission = |asset_id: AssetId, owner_keypair: KeyPair| {
-        let allow_alice_to_transfer_asset = Grant::permission(
+        let allow_alice_to_transfer_asset = Mint::permission(
             PermissionToken::new(
                 "CanTransferUserAsset".parse().unwrap(),
                 &json!({ "asset_id": asset_id }),
@@ -293,7 +293,7 @@ fn find_rate_and_make_exchange_isi_should_succeed() {
         test_client
             .submit_transaction_blocking(&grant_asset_transfer_tx)
             .expect(&format!(
-                "Failed to grant permission alice to transfer {asset_id}",
+                "Failed to mint permission alice to transfer {asset_id}",
             ));
     };
 

@@ -18,7 +18,7 @@ fn genesis_transactions_are_validated() {
 
     // Setting up genesis
 
-    let genesis = GenesisNetwork::test_with_instructions([Grant::permission(
+    let genesis = GenesisNetwork::test_with_instructions([Mint::permission(
         PermissionToken::new("InvalidToken".parse().unwrap(), &json!(null)),
         AccountId::from_str("alice@wonderland").unwrap(),
     )
@@ -231,7 +231,7 @@ fn permissions_differ_not_only_by_names() {
 
     // Granting permission to Alice to modify metadata in Mouse's hats
     let mouse_hat_id = AssetId::new(hat_definition_id, mouse_id.clone());
-    let allow_alice_to_set_key_value_in_hats = Grant::permission(
+    let allow_alice_to_set_key_value_in_hats = Mint::permission(
         PermissionToken::new(
             "CanSetKeyValueInUserAsset".parse().unwrap(),
             &json!({ "asset_id": mouse_hat_id }),
@@ -244,7 +244,7 @@ fn permissions_differ_not_only_by_names() {
         .sign(&mouse_keypair);
     client
         .submit_transaction_blocking(&grant_hats_access_tx)
-        .expect("Failed grant permission to modify Mouse's hats");
+        .expect("Failed mint permission to modify Mouse's hats");
 
     // Checking that Alice can modify Mouse's hats ...
     client
@@ -267,7 +267,7 @@ fn permissions_differ_not_only_by_names() {
         .expect_err("Expected Alice to fail to modify Mouse's shoes");
 
     // Granting permission to Alice to modify metadata in Mouse's shoes
-    let allow_alice_to_set_key_value_in_shoes = Grant::permission(
+    let allow_alice_to_set_key_value_in_shoes = Mint::permission(
         PermissionToken::new(
             "CanSetKeyValueInUserAsset".parse().unwrap(),
             &json!({ "asset_id": mouse_shoes_id }),
@@ -281,7 +281,7 @@ fn permissions_differ_not_only_by_names() {
 
     client
         .submit_transaction_blocking(&grant_shoes_access_tx)
-        .expect("Failed grant permission to modify Mouse's shoes");
+        .expect("Failed mint permission to modify Mouse's shoes");
 
     // Checking that Alice can modify Mouse's shoes
     client
@@ -317,7 +317,7 @@ fn stored_vs_granted_token_payload() -> Result<()> {
 
     // Allow alice to mint mouse asset and mint initial value
     let mouse_asset = AssetId::new(asset_definition_id, mouse_id.clone());
-    let allow_alice_to_set_key_value_in_mouse_asset = Grant::permission(
+    let allow_alice_to_set_key_value_in_mouse_asset = Mint::permission(
         PermissionToken::from_str_unchecked(
             "CanSetKeyValueInUserAsset".parse().unwrap(),
             // NOTE: Introduced additional whitespaces in the serialized form
@@ -331,7 +331,7 @@ fn stored_vs_granted_token_payload() -> Result<()> {
         .sign(&mouse_keypair);
     iroha_client
         .submit_transaction_blocking(&transaction)
-        .expect("Failed to grant permission to alice.");
+        .expect("Failed to mint permission to alice.");
 
     // Check that alice can indeed mint mouse asset
     let set_key_value = SetKeyValue::asset(mouse_asset, Name::from_str("color")?, "red".to_owned());
@@ -351,7 +351,7 @@ fn permission_tokens_are_unified() {
     // Given
     let alice_id = AccountId::from_str("alice@wonderland").expect("Valid");
 
-    let allow_alice_to_transfer_rose_1 = Grant::permission(
+    let allow_alice_to_transfer_rose_1 = Mint::permission(
         PermissionToken::from_str_unchecked(
             "CanTransferUserAsset".parse().unwrap(),
             // NOTE: Introduced additional whitespaces in the serialized form
@@ -360,7 +360,7 @@ fn permission_tokens_are_unified() {
         alice_id.clone(),
     );
 
-    let allow_alice_to_transfer_rose_2 = Grant::permission(
+    let allow_alice_to_transfer_rose_2 = Mint::permission(
         PermissionToken::from_str_unchecked(
             "CanTransferUserAsset".parse().unwrap(),
             // NOTE: Introduced additional whitespaces in the serialized form
@@ -371,7 +371,7 @@ fn permission_tokens_are_unified() {
 
     iroha_client
         .submit_blocking(allow_alice_to_transfer_rose_1)
-        .expect("failed to grant permission token");
+        .expect("failed to mint permission token");
 
     let _ = iroha_client
         .submit_blocking(allow_alice_to_transfer_rose_2)
@@ -394,14 +394,14 @@ fn associated_permission_tokens_removed_on_unregister() {
         &json!({ "domain_id": kingdom_id }),
     );
     let allow_bob_to_set_kv_in_domain =
-        Grant::permission(bob_to_set_kv_in_domain_token.clone(), bob_id.clone());
+        Mint::permission(bob_to_set_kv_in_domain_token.clone(), bob_id.clone());
 
     iroha_client
         .submit_all_blocking([
             InstructionBox::from(register_domain),
             allow_bob_to_set_kv_in_domain.into(),
         ])
-        .expect("failed to register domain and grant permission");
+        .expect("failed to register domain and mint permission");
 
     // check that bob indeed have granted permission
     assert!(iroha_client

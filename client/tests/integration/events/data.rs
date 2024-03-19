@@ -214,7 +214,7 @@ fn produce_multiple_events() -> Result<()> {
 
     // Grants role to Bob
     let bob_id = AccountId::from_str("bob@wonderland")?;
-    let grant_role = Grant::role(role_id.clone(), bob_id.clone());
+    let grant_role = Mint::role(role_id.clone(), bob_id.clone());
     client.submit_blocking(grant_role)?;
 
     // Unregister role

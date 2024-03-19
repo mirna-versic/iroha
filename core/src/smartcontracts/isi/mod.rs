@@ -42,8 +42,8 @@ impl Execute for InstructionBox {
             Self::Fail(isi) => isi.execute(authority, wsv),
             Self::SetKeyValue(isi) => isi.execute(authority, wsv),
             Self::RemoveKeyValue(isi) => isi.execute(authority, wsv),
-            Self::Grant(isi) => isi.execute(authority, wsv),
-            Self::Revoke(isi) => isi.execute(authority, wsv),
+            Self::Mint(isi) => isi.execute(authority, wsv),
+            Self::Burn(isi) => isi.execute(authority, wsv),
             Self::ExecuteTrigger(isi) => isi.execute(authority, wsv),
             Self::SetParameter(isi) => isi.execute(authority, wsv),
             Self::NewParameter(isi) => isi.execute(authority, wsv),
@@ -173,7 +173,7 @@ impl Execute for Fail {
 }
 
 impl Execute for GrantBox {
-    #[iroha_logger::log(name = "grant", skip_all, fields(object))]
+    #[iroha_logger::log(name = "mint", skip_all, fields(object))]
     fn execute(self, authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
         match self {
             Self::PermissionToken(sub_isi) => sub_isi.execute(authority, wsv),
@@ -184,7 +184,7 @@ impl Execute for GrantBox {
 }
 
 impl Execute for RevokeBox {
-    #[iroha_logger::log(name = "revoke", skip_all, fields(object))]
+    #[iroha_logger::log(name = "burn", skip_all, fields(object))]
     fn execute(self, authority: &AccountId, wsv: &mut WorldStateView) -> Result<(), Error> {
         match self {
             Self::PermissionToken(sub_isi) => sub_isi.execute(authority, wsv),
